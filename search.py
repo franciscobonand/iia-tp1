@@ -127,6 +127,8 @@ def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     from game import Directions
 
+    # This algorithim implementation is pretty similar to DFS
+    # The main difference is that it uses a Queue instead of a Stack
     start = problem.getStartState()
 
     if problem.isGoalState(start):
@@ -159,8 +161,43 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from game import Directions
+
+    # This algorithim implementation is pretty similar to DFS and BFS
+    # The main difference is that it uses a PriorityQueue, which orders
+    # it's elements by the cost to reach them
+    start = problem.getStartState()
+
+    if problem.isGoalState(start):
+        return Directions.STOP
+
+    visited = []  # list containing visited tiles
+    steps = []  # list of steps taken to get to the objective
+    # priority queue of expanded tiles (the ones viable to be visited)
+    expanded = util.PriorityQueue()
+    expanded.push((start, [], 0), 0)
+
+    while not expanded.isEmpty():
+        # (current tile, steps taken to reach it, cost to reach it)
+        (curr, steps, cost) = expanded.pop()
+
+        if curr not in visited:
+            visited.append(curr)
+
+            if problem.isGoalState(curr):
+                return steps
+            else:
+                next_tiles = problem.getSuccessors(curr)
+
+                for (coord, dir, tile_cost) in next_tiles:
+                    # next step = all the steps to reach current tile + next step
+                    next_step = steps + [dir]
+                    # next cost = cost to reach the current tile + next step cost
+                    next_cost = cost + tile_cost
+                    queue_item = (coord, next_step, next_cost)
+                    expanded.update(queue_item, next_cost)
+
+    return steps
 
 
 def nullHeuristic(state, problem=None):
