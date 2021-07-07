@@ -239,7 +239,7 @@ def greedySearch(problem, heuristic=nullHeuristic):
                 for (coord, dir, _) in next_tiles:
                     # next step = all the steps to reach current tile + next step
                     next_step = steps + [dir]
-                    # next cost = cost to reach the current tile + next step cost
+                    # next h cost = heuristic cost of next step
                     next_h_cost = heuristic(coord, problem)
                     queue_item = (coord, next_step)
                     expanded.update(queue_item, next_h_cost)
@@ -249,8 +249,43 @@ def greedySearch(problem, heuristic=nullHeuristic):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from game import Directions
+
+    start = problem.getStartState()
+
+    if problem.isGoalState(start):
+        return Directions.STOP
+
+    visited = []  # list containing visited tiles
+    steps = []  # list of steps taken to get to the objective
+    # priority queue of expanded tiles (the ones viable to be visited)
+    expanded = util.PriorityQueue()
+    expanded.push((start, [], 0), 0)
+
+    while not expanded.isEmpty():
+        # (current tile, steps taken to reach it, cost of heuristic)
+        (curr, steps, cost) = expanded.pop()
+
+        if curr not in visited:
+            visited.append(curr)
+
+            if problem.isGoalState(curr):
+                return steps
+            else:
+                next_tiles = problem.getSuccessors(curr)
+
+                for (coord, dir, tile_cost) in next_tiles:
+                    # next step = all the steps to reach current tile + next step
+                    next_step = steps + [dir]
+                    # next h cost = heuristic cost of next step
+                    next_h_cost = heuristic(coord, problem)
+                    # next cost = cost to reach the current tile + next step cost
+                    next_cost = cost + tile_cost
+                    total_cost = next_h_cost + next_cost
+                    queue_item = (coord, next_step, next_cost)
+                    expanded.update(queue_item, total_cost)
+
+    return steps
 
 
 def foodHeuristic(state, problem):
