@@ -210,8 +210,41 @@ def nullHeuristic(state, problem=None):
 
 def greedySearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from game import Directions
+
+    start = problem.getStartState()
+
+    if problem.isGoalState(start):
+        return Directions.STOP
+
+    visited = []  # list containing visited tiles
+    steps = []  # list of steps taken to get to the objective
+    # priority queue of expanded tiles (the ones viable to be visited)
+    start_value = heuristic(start, problem)
+    expanded = util.PriorityQueue()
+    expanded.push((start, []), 0)
+
+    while not expanded.isEmpty():
+        # (current tile, steps taken to reach it, cost of heuristic)
+        (curr, steps) = expanded.pop()
+
+        if curr not in visited:
+            visited.append(curr)
+
+            if problem.isGoalState(curr):
+                return steps
+            else:
+                next_tiles = problem.getSuccessors(curr)
+
+                for (coord, dir, _) in next_tiles:
+                    # next step = all the steps to reach current tile + next step
+                    next_step = steps + [dir]
+                    # next cost = cost to reach the current tile + next step cost
+                    next_h_cost = heuristic(coord, problem)
+                    queue_item = (coord, next_step)
+                    expanded.update(queue_item, next_h_cost)
+
+    return steps
 
 
 def aStarSearch(problem, heuristic=nullHeuristic):
