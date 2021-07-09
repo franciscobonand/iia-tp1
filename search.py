@@ -316,9 +316,28 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    (pacmanPosition, foodGrid) = state
+    goals = foodGrid.asList()
+    (x, y) = pacmanPosition
+    score = 0
+
+    while len(goals) > 0:
+        # dict with key = (pacman position, a goal position) and
+        # value = distance between them
+        table = {(goal): (abs(x - goal[0]) + abs(y - goal[1]))
+                 for goal in goals}
+
+        # gets goal which is closer to pacman
+        min_dist = min(table.values())
+        # cumulative manhattan distance to closer goal (score to get to it is bigger)
+        score += min_dist
+        # gets key of closer goal
+        minKey = min(table, key=table.get)
+        # remove analysed goal from goal list
+        goals.remove(minKey)
+
+    # returns the cost to get all the goals from current pacman position
+    return score
 
 
 # Abbreviations
