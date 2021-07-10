@@ -220,7 +220,6 @@ def greedySearch(problem, heuristic=nullHeuristic):
     visited = []  # list containing visited tiles
     steps = []  # list of steps taken to get to the objective
     # priority queue of expanded tiles (the ones viable to be visited)
-    start_value = heuristic(start, problem)
     expanded = util.PriorityQueue()
     expanded.push((start, []), 0)
 
@@ -316,25 +315,14 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    (pacmanPosition, foodGrid) = state
-    goals = foodGrid.asList()
-    (x, y) = pacmanPosition
+    (state_coordinate, food_grid) = state
+    goals = food_grid.asList()
+    (x, y) = state_coordinate
     score = 0
-
-    while len(goals) > 0:
-        # dict with key = (pacman position, a goal position) and
-        # value = distance between them
-        table = {(goal): (abs(x - goal[0]) + abs(y - goal[1]))
-                 for goal in goals}
-
-        # gets goal which is closer to pacman
-        min_dist = min(table.values())
-        # cumulative manhattan distance to closer goal (score to get to it is bigger)
-        score += min_dist
-        # gets key of closer goal
-        minKey = min(table, key=table.get)
-        # remove analysed goal from goal list
-        goals.remove(minKey)
+    # dict with key = (pacman position, a goal position) and
+    # value = distance between them
+    for (goalX, goalY) in goals:
+        score += abs(x - goalX) + abs(y - goalY)
 
     # returns the cost to get all the goals from current pacman position
     return score
