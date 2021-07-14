@@ -55,21 +55,12 @@ Todas as instâncias do problema foram executadas em um laptop Intel Inspiron 55
 
 ### Tiny Maze
 
-![image-20210710162222704](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710162222704.png)
-
-![image-20210710161623762](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710161623762.png) 
 
 ### Medium Maze
 
-![image-20210710162345535](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710162345535.png)
-
-![image-20210710161656955](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710161656955.png)
 
 ### Big Maze
 
-![image-20210710162427485](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710162427485.png)
-
-![o](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710161754961.png)
 
 #### Análise dos resultados acima
 
@@ -83,11 +74,9 @@ A heurística `foodHeuristic` implementada, que se baseia na distância de Manha
 
 **Tricky Search:**
 
-![image-20210710164749969](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710164749969.png)
 
 **Medium Search:**
 
-![image-20210710164810950](/home/franciscobonand/.config/Typora/typora-user-images/image-20210710164810950.png)
 
 ## Conclusão
 
